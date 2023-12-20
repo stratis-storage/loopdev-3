@@ -9,6 +9,7 @@ repository = "https://github.com/stratis-storage/loopdev-3"
 readme = "README.md"
 keywords = ["loop"]
 edition = "2021"
+exclude = ["/.github", ".gitignore"]
 
 [lib]
 name = "loopdev"
