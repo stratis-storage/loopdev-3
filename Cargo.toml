@@ -7,7 +7,7 @@ license = "MIT"
 documentation = "https://docs.rs/loopdev-3"
 repository = "https://github.com/stratis-storage/loopdev-3"
 readme = "README.md"
-keywords = ["loop", "losetup"]
+keywords = ["loop"]
 edition = "2021"
 
 [lib]
