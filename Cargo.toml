@@ -7,9 +7,10 @@ license = "MIT"
 documentation = "https://docs.rs/loopdev-3"
 repository = "https://github.com/stratis-storage/loopdev-3"
 readme = "README.md"
+categories = ["os::linux-apis", "api-bindings"]
 keywords = ["loop"]
 edition = "2021"
-exclude = ["/.github", ".gitignore"]
+exclude = ["/.github", ".gitignore", "Makefile"]
 
 [lib]
 name = "loopdev"
