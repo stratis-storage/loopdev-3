@@ -5,3 +5,5 @@ disk.img
 *.rustfmt
 .vagrant
 *.log
+*.swp
+*.swo
