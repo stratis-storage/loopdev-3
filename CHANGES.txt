@@ -1,0 +1,10 @@
+loopdev-3 0.5.1
+===============
+Recommended Rust toolchain version: 1.76.0
+Recommended development platform for Python development: Fedora 38
+
+- Increase bindgen dependency lower bound to 0.69.0:
+  https://github.com/stratis-storage/loopdev-3/pull/9
+
+- Tidies and Maintenance:
+  https://github.com/stratis-storage/loopdev-3/pull/8
