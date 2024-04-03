@@ -40,7 +40,7 @@ pub fn partition_backing_file(backing_file: impl AsRef<Path>, size: u64) {
         .expect("could not open backing file");
 
     disk.update_partitions(std::collections::BTreeMap::<u32, gpt::partition::Partition>::new())
-        .expect("coult not initialize blank partition table");
+        .expect("could not initialize blank partition table");
 
     disk.add_partition(
         "Linux filesystem",
