@@ -31,6 +31,11 @@ check-fedora-versions: test-compare-fedora-versions
 
 yamllint:
 	yamllint --strict .github/workflows/*.yml
+fmt:
+	cargo fmt
+
+fmt-ci:
+	cargo fmt -- --check
 
 audit:
 	cargo audit -D warnings
@@ -40,5 +45,7 @@ audit:
 	audit
 	check-fedora-versions
 	clippy
+	fmt
+	fmt-ci
 	test-compare-fedora-versions
 	yamllint
