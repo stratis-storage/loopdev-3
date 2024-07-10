@@ -20,7 +20,7 @@ direct_io = []
 
 [dependencies]
 errno = "0.3.0"
-libc = "0.2.105"
+libc = "0.2.133"
 
 [build-dependencies]
 bindgen = { version = "0.69.0", default-features = false, features = ["runtime"] }
