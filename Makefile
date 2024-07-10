@@ -21,6 +21,16 @@ CLIPPY_DENY = -D clippy::all -D clippy::cargo -A clippy::multiple-crate-versions
 clippy:
 	RUSTFLAGS="${DENY}" cargo clippy ${CLIPPY_OPTS} -- ${CLIPPY_DENY}
 
+SET_LOWER_BOUNDS ?=
+test-set-lower-bounds:
+	echo "Testing that SET_LOWER_BOUNDS environment variable is set to a valid path"
+	test -e "${SET_LOWER_BOUNDS}"
+
+verify-dependency-bounds: test-set-lower-bounds
+	RUSTFLAGS="${DENY}" cargo build ${MANIFEST_PATH_ARGS}
+	${SET_LOWER_BOUNDS} ${MANIFEST_PATH_ARGS}
+	RUSTFLAGS="${DENY}" cargo build ${MANIFEST_PATH_ARGS}
+
 COMPARE_FEDORA_VERSIONS ?=
 test-compare-fedora-versions:
 	echo "Testing that COMPARE_FEDORA_VERSIONS environment variable is set to a valid path"
