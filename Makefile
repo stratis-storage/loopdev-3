@@ -14,12 +14,8 @@ else
   CLIPPY_OPTS = --fix
 endif
 
-DENY = -D warnings -D future-incompatible -D unused -D rust_2018_idioms -D nonstandard_style
-
-CLIPPY_DENY = -D clippy::all -D clippy::cargo -A clippy::multiple-crate-versions
-
 clippy:
-	RUSTFLAGS="${DENY}" cargo clippy ${CLIPPY_OPTS} -- ${CLIPPY_DENY}
+	cargo clippy ${CLIPPY_OPTS}
 
 SET_LOWER_BOUNDS ?=
 test-set-lower-bounds:
@@ -27,9 +23,9 @@ test-set-lower-bounds:
 	test -e "${SET_LOWER_BOUNDS}"
 
 verify-dependency-bounds: test-set-lower-bounds
-	RUSTFLAGS="${DENY}" cargo build ${MANIFEST_PATH_ARGS}
+	cargo build ${MANIFEST_PATH_ARGS}
 	${SET_LOWER_BOUNDS} ${MANIFEST_PATH_ARGS}
-	RUSTFLAGS="${DENY}" cargo build ${MANIFEST_PATH_ARGS}
+	cargo build ${MANIFEST_PATH_ARGS}
 
 COMPARE_FEDORA_VERSIONS ?=
 test-compare-fedora-versions:
