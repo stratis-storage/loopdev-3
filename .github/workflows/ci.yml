@@ -59,11 +59,7 @@ jobs:
         run: sudo apt-get install llvm-dev libclang-dev clang
 
       - name: Run cargo fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
-
+        run: make -f Makefile fmt-ci
       - name: Run cargo clippy
         run: make -f Makefile clippy
 
