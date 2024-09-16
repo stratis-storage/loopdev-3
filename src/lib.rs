@@ -292,6 +292,13 @@ impl LoopDevice {
         std::fs::read_link(&p).ok()
     }
 
+    // Get the path of the loop device preserving the error stack.
+    pub fn path_result(&self) -> Result<PathBuf, io::Error> {
+        let mut p = PathBuf::from("/proc/self/fd");
+        p.push(self.device.as_raw_fd().to_string());
+        std::fs::read_link(&p)
+    }
+
     /// Get the device major number
     ///
     /// # Errors
