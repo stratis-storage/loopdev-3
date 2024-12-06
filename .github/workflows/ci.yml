@@ -67,7 +67,7 @@ jobs:
   dependencies:
     runs-on: ubuntu-latest
     container:
-      image: fedora:40  # CURRENT DEVELOPMENT ENVIRONMENT
+      image: fedora:41  # CURRENT DEVELOPMENT ENVIRONMENT
     steps:
       - name: Install git for checkout action
         run: dnf install -y git
@@ -103,7 +103,7 @@ jobs:
   yamllint:
     runs-on: ubuntu-22.04
     container:
-      image: fedora:40  # CURRENT DEVELOPMENT ENVIRONMENT
+      image: fedora:41  # CURRENT DEVELOPMENT ENVIRONMENT
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies for Fedora
