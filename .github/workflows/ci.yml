@@ -89,8 +89,8 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           COMPARE_FEDORA_VERSIONS=./compare_fedora_versions MANIFEST_PATH=../../Cargo.toml FEDORA_RELEASE=rawhide IGNORE_ARGS="--ignore-category low" make -f ../../Makefile check-fedora-versions
+          COMPARE_FEDORA_VERSIONS=./compare_fedora_versions MANIFEST_PATH=../../Cargo.toml FEDORA_RELEASE=f41 IGNORE_ARGS="--ignore-category low" make -f ../../Makefile check-fedora-versions
           COMPARE_FEDORA_VERSIONS=./compare_fedora_versions MANIFEST_PATH=../../Cargo.toml FEDORA_RELEASE=f40 IGNORE_ARGS="--ignore-category low" make -f ../../Makefile check-fedora-versions
-          COMPARE_FEDORA_VERSIONS=./compare_fedora_versions MANIFEST_PATH=../../Cargo.toml FEDORA_RELEASE=f39 IGNORE_ARGS="--ignore-category low" make -f ../../Makefile check-fedora-versions
         working-directory: ./ci/dependency_management
 
   yamllint:
