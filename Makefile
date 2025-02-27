@@ -14,18 +14,14 @@ else
   CLIPPY_OPTS = --fix
 endif
 
+ifeq ($(origin MINIMAL), undefined)
+  BUILD = build
+else
+  BUILD = minimal-versions build --direct
+endif
+
 clippy:
 	cargo clippy ${CLIPPY_OPTS}
-
-SET_LOWER_BOUNDS ?=
-test-set-lower-bounds:
-	echo "Testing that SET_LOWER_BOUNDS environment variable is set to a valid path"
-	test -e "${SET_LOWER_BOUNDS}"
-
-verify-dependency-bounds: test-set-lower-bounds
-	cargo build ${MANIFEST_PATH_ARGS}
-	${SET_LOWER_BOUNDS} ${MANIFEST_PATH_ARGS}
-	cargo build ${MANIFEST_PATH_ARGS}
 
 COMPARE_FEDORA_VERSIONS ?=
 test-compare-fedora-versions:
@@ -47,7 +43,7 @@ audit:
 	cargo audit -D warnings
 
 build:
-	cargo build
+	cargo ${BUILD}
 
 .PHONY:
 	audit
