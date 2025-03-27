@@ -300,6 +300,7 @@ impl LoopDevice {
     /// an IO error.
     #[allow(clippy::unnecessary_cast)]
     pub fn major(&self) -> io::Result<u32> {
+        #[allow(unused_unsafe)]
         self.device
             .metadata()
             .map(|m| unsafe { libc::major(m.rdev()) })
@@ -314,6 +315,7 @@ impl LoopDevice {
     /// an IO error.
     #[allow(clippy::unnecessary_cast)]
     pub fn minor(&self) -> io::Result<u32> {
+        #[allow(unused_unsafe)]
         self.device
             .metadata()
             .map(|m| unsafe { libc::minor(m.rdev()) })
