@@ -1,6 +1,6 @@
 loopdev-3 0.5.2
 ===============
-Recommended Rust toolchain version: 1.85.0
+Recommended Rust toolchain version: 1.86.0
 Recommended development platform for Python development: Fedora 40
 
 - Cargo.toml: Set rust-version to 1.74.0:
@@ -17,6 +17,8 @@ Recommended development platform for Python development: Fedora 40
   https://github.com/stratis-storage/loopdev-3/pull/17
 
 - Tidies and Maintenance:
+  https://github.com/stratis-storage/loopdev-3/pull/44
+  https://github.com/stratis-storage/loopdev-3/pull/43
   https://github.com/stratis-storage/loopdev-3/pull/42
   https://github.com/stratis-storage/loopdev-3/pull/40
   https://github.com/stratis-storage/loopdev-3/pull/39
