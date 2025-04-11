@@ -1,0 +1,46 @@
+---
+name: loopdev-3 nightly
+
+# yamllint disable-line rule:truthy
+on:
+  schedule:
+    - cron: 5 3 * * *
+
+  workflow_dispatch:
+
+jobs:
+  checks-with-ci-repo:
+    runs-on: ubuntu-22.04
+    container:
+      image: fedora:40  # CURRENT DEVELOPMENT ENVIRONMENT
+    steps:
+      - name: Install git for checkout action
+        run: dnf install -y git
+      - uses: actions/checkout@v4
+        with:
+          path: loopdev-3
+      - name: Install dependencies for Fedora
+        run: >
+          dnf install -y
+          curl
+          make
+          openssl-devel
+          python-requests
+          python-semantic_version
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          components: cargo
+          toolchain: 1.86.0  # CURRENT DEVELOPMENT RUST TOOLCHAIN
+      - name: Check out ci repo
+        uses: actions/checkout@v4
+        with:
+          path: ci
+          repository: stratis-storage/ci
+      - name: Run comparisons of version specs with Fedora packages
+        # yamllint disable rule:line-length
+        run: |
+          COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=rawhide make -f Makefile check-fedora-versions
+          COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=f42 make -f Makefile check-fedora-versions
+          COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=f41 make -f Makefile check-fedora-versions
+          COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=f40 make -f Makefile check-fedora-versions
+        working-directory: loopdev-3
