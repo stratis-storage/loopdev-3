@@ -17,6 +17,8 @@ Recommended development platform for Python development: Fedora 40
   https://github.com/stratis-storage/loopdev-3/pull/17
 
 - Tidies and Maintenance:
+  https://github.com/stratis-storage/loopdev-3/pull/47
+  https://github.com/stratis-storage/loopdev-3/pull/45
   https://github.com/stratis-storage/loopdev-3/pull/44
   https://github.com/stratis-storage/loopdev-3/pull/43
   https://github.com/stratis-storage/loopdev-3/pull/42
@@ -25,6 +27,7 @@ Recommended development platform for Python development: Fedora 40
   https://github.com/stratis-storage/loopdev-3/pull/38
   https://github.com/stratis-storage/loopdev-3/pull/37
   https://github.com/stratis-storage/loopdev-3/pull/36
+  https://github.com/stratis-storage/loopdev-3/pull/34
   https://github.com/stratis-storage/loopdev-3/pull/33
   https://github.com/stratis-storage/loopdev-3/pull/32
   https://github.com/stratis-storage/loopdev-3/pull/31
