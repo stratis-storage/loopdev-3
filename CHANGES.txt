@@ -3,6 +3,9 @@ loopdev-3 0.5.2
 Recommended Rust toolchain version: 1.86.0
 Recommended development platform for Python development: Fedora 40
 
+- Pin bindgen Rust target version:
+  https://github.com/stratis-storage/loopdev-3/pull/48
+
 - Cargo.toml: Set rust-version to 1.74.0:
   https://github.com/stratis-storage/loopdev-3/pull/35
 
