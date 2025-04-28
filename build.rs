@@ -1,8 +1,9 @@
-use bindgen::Builder;
+use bindgen::{Builder, RustTarget};
 use std::{env::var, path::PathBuf};
 
 fn main() {
     let bindings = Builder::default()
+        .rust_target(RustTarget::Stable_1_73)
         .header_contents("wrapper.h", "#include <linux/loop.h>")
         .derive_default(true)
         .generate()
