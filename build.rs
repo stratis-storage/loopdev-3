@@ -1,9 +1,13 @@
-use bindgen::{Builder, RustTarget};
+use bindgen::Builder;
 use std::{env::var, path::PathBuf};
 
 fn main() {
     let bindings = Builder::default()
-        .rust_target(RustTarget::Stable_1_73)
+        .rust_target(
+            env!("CARGO_PKG_RUST_VERSION")
+                .parse()
+                .expect("valid rust version"),
+        )
         .header_contents("wrapper.h", "#include <linux/loop.h>")
         .derive_default(true)
         .generate()
