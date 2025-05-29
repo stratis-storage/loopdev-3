@@ -1,0 +1,39 @@
+upstream_project_url: https://github.com/stratis-storage/loopdev-3
+
+packages:
+  loopdev-3:
+    specfile_path: ../distro/rust-loopdev-3.spec
+    downstream_package_name: loopdev-3
+    actions:
+      post-upstream-clone:
+        - "mkdir ../distro"
+        - "bash -c '(cd ../distro; wget https://src.fedoraproject.org/rpms/rust-loopdev-3/raw/rawhide/f/rust-loopdev-3.spec https://src.fedoraproject.org/rpms/rust-loopdev-3/raw/rawhide/f/rust2rpm.toml)'"
+        - "cargo install cargo-get"
+      create-archive:
+        - "cargo package --no-verify"
+        - "bash -c '(cd ../distro; rust2rpm loopdev-3)'"
+        - "bash -c 'echo \"target/package/loopdev-3-$(cargo get package.version).crate\"'"
+      get-current-version:
+        - "cargo get package.version"
+
+srpm_build_deps:
+  - cargo
+  - rust2rpm
+  - rust2rpm-helper
+  - wget2
+  - wget2-wget
+
+jobs:
+  - job: copr_build
+    trigger: pull_request
+    targets:
+      - fedora-all
+
+  - job: copr_build
+    trigger: commit
+    targets:
+      - fedora-all
+
+notifications:
+  pull_request:
+    successful_build: true
