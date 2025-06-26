@@ -118,7 +118,7 @@ impl LoopControl {
                 LOOP_CTL_GET_FREE as IoctlRequest,
             )
         })?;
-        LoopDevice::open(format!("{}{}", LOOP_PREFIX, dev_num))
+        LoopDevice::open(format!("{LOOP_PREFIX}{dev_num}"))
     }
 
     /// Add and opens a new loop device.
@@ -144,7 +144,7 @@ impl LoopControl {
                 n as c_int,
             )
         })?;
-        LoopDevice::open(format!("{}{}", LOOP_PREFIX, dev_num))
+        LoopDevice::open(format!("{LOOP_PREFIX}{dev_num}"))
     }
 }
 
