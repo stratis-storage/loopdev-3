@@ -41,6 +41,7 @@ use crate::bindings::{
     loop_info64, LOOP_CLR_FD, LOOP_CTL_ADD, LOOP_CTL_GET_FREE, LOOP_SET_CAPACITY, LOOP_SET_FD,
     LOOP_SET_STATUS64, LO_FLAGS_AUTOCLEAR, LO_FLAGS_PARTSCAN, LO_FLAGS_READ_ONLY,
 };
+use bindings::LOOP_GET_STATUS64;
 #[cfg(feature = "direct_io")]
 use bindings::LOOP_SET_DIRECT_IO;
 use libc::{c_int, ioctl};
@@ -52,12 +53,16 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use loname::Name;
+
 #[allow(non_camel_case_types)]
 #[allow(dead_code)]
 #[allow(non_snake_case)]
 mod bindings {
     include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 }
+
+mod loname;
 
 #[cfg(all(not(target_os = "android"), not(target_env = "musl")))]
 type IoctlRequest = libc::c_ulong;
@@ -243,9 +248,15 @@ impl LoopDevice {
     fn attach_with_loop_info(
         &self, // TODO should be mut? - but changing it is a breaking change
         backing_file: impl AsRef<Path>,
-        info: loop_info64,
+        mut info: loop_info64,
     ) -> io::Result<()> {
         let write_access = (info.lo_flags & LO_FLAGS_READ_ONLY) == 0;
+
+        // store backing file name in the info
+        let name = loname::Name::from_path(&backing_file).unwrap_or(Name::default());
+        info.lo_file_name = name.0.clone();
+        info.lo_crypt_name = name.0;
+
         let bf = OpenOptions::new()
             .read(true)
             .write(write_access)
@@ -310,6 +321,23 @@ impl LoopDevice {
         let mut p = PathBuf::from("/proc/self/fd");
         p.push(self.device.as_raw_fd().to_string());
         std::fs::read_link(&p).ok()
+    }
+
+    /// Try to obtain the original file path used on mapping
+    /// The method ignores ioctl errors
+    ///
+    /// # Return
+    /// The path expected to be stored in the loop_info64.
+    /// If it's not there, method returns None, otherwise - the string stored
+    pub fn original_path(&self) -> Option<PathBuf> {
+        self.info().ok().and_then(|info| {
+            let name = Name(info.lo_file_name).to_string();
+            if name.is_empty() {
+                None
+            } else {
+                Some(PathBuf::from(name))
+            }
+        })
     }
 
     /// Get the device major number
@@ -388,6 +416,21 @@ impl LoopDevice {
             )
         })?;
         Ok(())
+    }
+
+    /// Obtain loop_info64 struct for the loop device
+    /// # Return
+    /// Ok(loop_info64) - successfully obtained info
+    /// Err(std::io::Error) - error from ioctl
+    pub fn info(&self) -> Result<loop_info64, std::io::Error> {
+        let empty_info = Box::new(loop_info64::default());
+        let fd = self.device.as_raw_fd();
+
+        unsafe {
+            let ptr = Box::into_raw(empty_info);
+            let ret_code = libc::ioctl(fd.as_raw_fd(), LOOP_GET_STATUS64 as IoctlRequest, ptr);
+            ioctl_to_error(ret_code).map(|_| *Box::from_raw(ptr))
+        }
     }
 
     /// Enable or disable direct I/O for the backing file.
