@@ -27,12 +27,14 @@ impl Name {
             ));
         }
         let mut data: [u8; 64] = [0; LO_NAME_SIZE as usize];
-        for (idx, byte) in s.into_iter().enumerate() {
+        for (idx, byte) in s.iter().enumerate() {
             data[idx] = *byte;
         }
         Ok(Self(data))
     }
 }
+
+#[allow(clippy::to_string_trait_impl)]
 impl ToString for Name {
     fn to_string(&self) -> String {
         self.0
