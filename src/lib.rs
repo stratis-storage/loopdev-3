@@ -253,8 +253,8 @@ impl LoopDevice {
         let write_access = (info.lo_flags & LO_FLAGS_READ_ONLY) == 0;
 
         // store backing file name in the info
-        let name = loname::Name::from_path(&backing_file).unwrap_or(Name::default());
-        info.lo_file_name = name.0.clone();
+        let name = loname::Name::from_path(&backing_file).unwrap_or_default();
+        info.lo_file_name = name.0;
         info.lo_crypt_name = name.0;
 
         let bf = OpenOptions::new()
