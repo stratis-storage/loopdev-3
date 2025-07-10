@@ -1,7 +1,7 @@
 [package]
 name = "loopdev-3"
 description = "Setup and control loop devices"
-version = "0.5.2"
+version = "0.5.3"
 authors = ["Stratis Developers <stratis-devel@lists.fedorahosted.org>", "Michael Daffin <michael@daffin.io>"]
 rust-version = "1.77.0"  # LOWEST SUPPORTED RUST TOOLCHAIN
 license = "MIT"
