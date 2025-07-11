@@ -58,7 +58,7 @@ fn attach_a_backing_file_with_sizelimit_overflow() {
 fn attach_a_backing_file(offset: u64, sizelimit: u64, file_size: i64) {
     let _lock = setup();
 
-    let (mut devices, ld0_path, file_path) = {
+    let (devices, ld0_path, file_path) = {
         let lc = LoopControl::open().expect("should be able to open the LoopControl device");
 
         let file = create_backing_file(file_size);
@@ -84,26 +84,23 @@ fn attach_a_backing_file(offset: u64, sizelimit: u64, file_size: i64) {
         1,
         "there should be only one loopback mounted device"
     );
-
-    let device = devices.pop().unwrap();
-
     assert_eq!(
-        device.name.as_str(),
+        devices[0].name.as_str(),
         ld0_path.to_str().unwrap(),
         "the attached devices name should match the input name"
     );
     assert_eq!(
-        device.back_file.clone().unwrap().as_str(),
+        devices[0].back_file.clone().unwrap().as_str(),
         file_path.to_str().unwrap(),
         "the backing file should match the given file"
     );
     assert_eq!(
-        device.offset,
+        devices[0].offset,
         Some(offset),
         "the offset should match the requested offset"
     );
     assert_eq!(
-        device.size_limit,
+        devices[0].size_limit,
         Some(sizelimit),
         "the sizelimit should match the requested sizelimit"
     );
