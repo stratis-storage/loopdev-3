@@ -236,11 +236,7 @@ impl LoopDevice {
     /// for further details) or when calling the ioctl to attach the backing
     /// file to the device.
     pub fn attach_file<P: AsRef<Path>>(&self, backing_file: P) -> io::Result<()> {
-        let info = loop_info64 {
-            ..Default::default()
-        };
-
-        Self::attach_with_loop_info(self, backing_file, info)
+        Self::attach_with_loop_info(self, backing_file, loop_info64::default())
     }
 
     /// Attach the loop device to a file with `loop_info64`.
