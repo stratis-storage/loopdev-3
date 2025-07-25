@@ -256,13 +256,7 @@ impl LoopDevice {
     /// Attach the loop device to a fd with `loop_info`.
     fn attach_fd_with_loop_info(&self, bf: impl AsRawFd, info: loop_info64) -> io::Result<()> {
         // Attach the file
-        ioctl_to_error(unsafe {
-            ioctl(
-                self.device.as_raw_fd() as c_int,
-                LOOP_SET_FD as IoctlRequest,
-                bf.as_raw_fd() as c_int,
-            )
-        })?;
+        self.attach_fd(bf.as_raw_fd())?;
 
         let result = unsafe {
             ioctl(
@@ -279,6 +273,18 @@ impl LoopDevice {
             }
             Ok(_) => Ok(()),
         }
+    }
+
+    pub fn attach_fd(&self, fd: RawFd) -> io::Result<()> {
+        ioctl_to_error(unsafe {
+            ioctl(
+                self.device.as_raw_fd() as c_int,
+                LOOP_SET_FD as IoctlRequest,
+                fd as c_int,
+            )
+        })?;
+
+        Ok(())
     }
 
     /// Get the path of the loop device.
