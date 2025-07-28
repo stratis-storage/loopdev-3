@@ -275,6 +275,24 @@ impl LoopDevice {
         }
     }
 
+    /// Attach the loop device to a file descriptor of an already opened file
+    /// # Examples
+    ///
+    /// Attach the device to a file descriptor.
+    ///
+    /// ```no_run
+    /// use std::fs::OpenOptions;
+    /// use loopdev::LoopDevice;
+    /// let file = OpenOptions::new().read(true).write(true).open("disk.img").unwrap();
+    /// let mut ld = LoopDevice::open("/dev/loop0").unwrap();
+    /// ld.attach_fd(file).unwrap();
+    /// # ld.detach().unwrap();
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// This file descriptor needs to be already opened and can fail otherwise
+    /// with an IO error.
     pub fn attach_fd(&self, fd: impl AsRawFd) -> io::Result<()> {
         ioctl_to_error(unsafe {
             ioctl(
