@@ -4,6 +4,8 @@ Recommended Rust toolchain version: 1.88.0
 Recommended development platform for Python development: Fedora 41
 
 - Tidies and Maintenance:
+  https://github.com/stratis-storage/loopdev-3/pull/62
+  https://github.com/stratis-storage/loopdev-3/pull/60
   https://github.com/stratis-storage/loopdev-3/pull/59
   https://github.com/stratis-storage/loopdev-3/pull/57
 
