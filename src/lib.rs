@@ -275,12 +275,12 @@ impl LoopDevice {
         }
     }
 
-    pub fn attach_fd(&self, fd: RawFd) -> io::Result<()> {
+    pub fn attach_fd(&self, fd: impl AsRawFd) -> io::Result<()> {
         ioctl_to_error(unsafe {
             ioctl(
                 self.device.as_raw_fd() as c_int,
                 LOOP_SET_FD as IoctlRequest,
-                fd as c_int,
+                fd.as_raw_fd() as c_int,
             )
         })?;
 
