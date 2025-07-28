@@ -63,6 +63,8 @@ jobs:
         run: make -f Makefile fmt-ci
       - name: Run cargo clippy
         run: make -f Makefile clippy
+      - name: Run doc tests
+        run: make -f Makefile doc-test
 
   dependencies:
     runs-on: ubuntu-latest
