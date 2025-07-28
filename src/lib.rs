@@ -256,13 +256,7 @@ impl LoopDevice {
     /// Attach the loop device to a fd with `loop_info`.
     fn attach_fd_with_loop_info(&self, bf: impl AsRawFd, info: loop_info64) -> io::Result<()> {
         // Attach the file
-        ioctl_to_error(unsafe {
-            ioctl(
-                self.device.as_raw_fd() as c_int,
-                LOOP_SET_FD as IoctlRequest,
-                bf.as_raw_fd() as c_int,
-            )
-        })?;
+        self.attach_fd(bf.as_raw_fd())?;
 
         let result = unsafe {
             ioctl(
@@ -279,6 +273,36 @@ impl LoopDevice {
             }
             Ok(_) => Ok(()),
         }
+    }
+
+    /// Attach the loop device to a file descriptor of an already opened file
+    /// # Examples
+    ///
+    /// Attach the device to a file descriptor.
+    ///
+    /// ```no_run
+    /// use std::fs::OpenOptions;
+    /// use loopdev::LoopDevice;
+    /// let file = OpenOptions::new().read(true).write(true).open("disk.img").unwrap();
+    /// let mut ld = LoopDevice::open("/dev/loop0").unwrap();
+    /// ld.attach_fd(file).unwrap();
+    /// # ld.detach().unwrap();
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// This file descriptor needs to be already opened and can fail otherwise
+    /// with an IO error.
+    pub fn attach_fd(&self, fd: impl AsRawFd) -> io::Result<()> {
+        ioctl_to_error(unsafe {
+            ioctl(
+                self.device.as_raw_fd() as c_int,
+                LOOP_SET_FD as IoctlRequest,
+                fd.as_raw_fd() as c_int,
+            )
+        })?;
+
+        Ok(())
     }
 
     /// Get the path of the loop device.
