@@ -40,11 +40,15 @@ audit:
 build:
 	cargo ${BUILD}
 
+doc-test:
+	cargo test --doc
+
 .PHONY:
 	audit
 	build
 	check-fedora-versions
 	clippy
+	doc-test
 	fmt
 	fmt-ci
 	test-compare-fedora-versions
