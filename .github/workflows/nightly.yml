@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Install git for checkout action
         run: dnf install -y git
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: loopdev-3
       - name: Install dependencies for Fedora
@@ -32,7 +32,7 @@ jobs:
           components: cargo
           toolchain: 1.89.0  # CURRENT DEVELOPMENT RUST TOOLCHAIN
       - name: Check out ci repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: ci
           repository: stratis-storage/ci
@@ -48,7 +48,7 @@ jobs:
   semver-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Do semantic version checks
         uses: obi1kenobi/cargo-semver-checks-action@v2
         with:

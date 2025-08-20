@@ -21,7 +21,7 @@ jobs:
           - x86_64-unknown-linux-musl
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
@@ -73,7 +73,7 @@ jobs:
     steps:
       - name: Install git for checkout action
         run: dnf install -y git
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: loopdev-3
       - name: Install dependencies for Fedora
@@ -89,7 +89,7 @@ jobs:
           components: cargo
           toolchain: 1.89.0  # CURRENT DEVELOPMENT RUST TOOLCHAIN
       - name: Check out ci repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: ci
           repository: stratis-storage/ci
@@ -107,7 +107,7 @@ jobs:
     container:
       image: fedora:41  # CURRENT DEVELOPMENT ENVIRONMENT
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install dependencies for Fedora
         run: dnf install -y make yamllint
       - name: Run yamllint
