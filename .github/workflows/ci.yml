@@ -21,7 +21,7 @@ jobs:
           - x86_64-unknown-linux-musl
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Install stable toolchain
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Install stable toolchain
@@ -75,7 +75,7 @@ jobs:
     steps:
       - name: Install git for checkout action
         run: dnf install -y git
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: loopdev-3
           persist-credentials: false
@@ -92,7 +92,7 @@ jobs:
           components: cargo
           toolchain: 1.91.0  # CURRENT DEVELOPMENT RUST TOOLCHAIN
       - name: Check out ci repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: ci
           repository: stratis-storage/ci
@@ -110,7 +110,7 @@ jobs:
     container:
       image: fedora:42  # CURRENT DEVELOPMENT ENVIRONMENT
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Install dependencies for Fedora
