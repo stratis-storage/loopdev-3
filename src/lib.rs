@@ -423,14 +423,17 @@ impl LoopDevice {
     /// Ok(loop_info64) - successfully obtained info
     /// Err(std::io::Error) - error from ioctl
     pub fn info(&self) -> Result<loop_info64, std::io::Error> {
-        let empty_info = Box::new(loop_info64::default());
-        let fd = self.device.as_raw_fd();
+        let mut loop_info = loop_info64::default();
 
-        unsafe {
-            let ptr = Box::into_raw(empty_info);
-            let ret_code = libc::ioctl(fd.as_raw_fd(), LOOP_GET_STATUS64 as IoctlRequest, ptr);
-            ioctl_to_error(ret_code).map(|_| *Box::from_raw(ptr))
-        }
+        let ret_code = unsafe {
+            libc::ioctl(
+                self.device.as_raw_fd(),
+                LOOP_GET_STATUS64 as IoctlRequest,
+                &mut loop_info,
+            )
+        };
+
+        ioctl_to_error(ret_code).map(|_| loop_info)
     }
 
     /// Enable or disable direct I/O for the backing file.
