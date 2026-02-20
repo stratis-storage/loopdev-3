@@ -29,7 +29,7 @@ impl Name {
                 s.len()
             ));
         }
-        let mut data: [u8; 64] = [0; LO_NAME_SIZE as usize];
+        let mut data = [0; LO_NAME_SIZE as usize];
         for (idx, byte) in s.iter().enumerate() {
             data[idx] = *byte;
         }
