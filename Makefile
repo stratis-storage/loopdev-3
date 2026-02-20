@@ -27,7 +27,7 @@ check-fedora-versions: test-compare-fedora-versions
 	${COMPARE_FEDORA_VERSIONS} ${FEDORA_RELEASE_ARGS} ${IGNORE_ARGS}
 
 yamllint:
-	yamllint --strict .github/workflows/*.yml
+	yamllint --strict .github/workflows/*.yml .yamllint.yaml
 fmt:
 	cargo fmt
 

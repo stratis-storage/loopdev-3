@@ -1,5 +1,4 @@
 use libc::fallocate;
-use once_cell::sync::Lazy;
 use serde::{Deserialize, Deserializer};
 use std::{
     fs::OpenOptions,
@@ -7,6 +6,7 @@ use std::{
     os::unix::io::AsRawFd,
     path::Path,
     process::Command,
+    sync::LazyLock,
     sync::{Arc, Mutex, MutexGuard},
 };
 
@@ -14,7 +14,7 @@ use tempfile::{NamedTempFile, TempPath};
 
 // All tests use the same loopback device interface and so can tread on each others toes leading to
 // racy tests. So we need to lock all tests to ensure only one runs at a time.
-static LOCK: Lazy<Arc<Mutex<()>>> = Lazy::new(|| Arc::new(Mutex::new(())));
+static LOCK: LazyLock<Arc<Mutex<()>>> = LazyLock::new(|| Arc::new(Mutex::new(())));
 
 pub fn create_backing_file(size: i64) -> TempPath {
     let file = NamedTempFile::new().expect("should be able to create a temp file");

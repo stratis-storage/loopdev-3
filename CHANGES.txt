@@ -1,3 +1,30 @@
+loopdev-3 0.5.3
+===============
+Recommended Rust toolchain version: 1.90.0
+Recommended development platform for Python development: Fedora 42
+
+- Increase lowest supported Rust to 1.77.0:
+  https://github.com/stratis-storage/loopdev-3/pull/66
+
+- Directly attach file descriptor via LoopDevice:
+  https://github.com/stratis-storage/loopdev-3/pull/61
+
+- Increase bindgen dependency lower bound to 0.72.0:
+  https://github.com/stratis-storage/loopdev-3/pull/69
+
+- Tidies and Maintenance:
+  https://github.com/stratis-storage/loopdev-3/pull/71
+  https://github.com/stratis-storage/loopdev-3/pull/70
+  https://github.com/stratis-storage/loopdev-3/pull/68
+  https://github.com/stratis-storage/loopdev-3/pull/67
+  https://github.com/stratis-storage/loopdev-3/pull/65
+  https://github.com/stratis-storage/loopdev-3/pull/64
+  https://github.com/stratis-storage/loopdev-3/pull/62
+  https://github.com/stratis-storage/loopdev-3/pull/60
+  https://github.com/stratis-storage/loopdev-3/pull/59
+  https://github.com/stratis-storage/loopdev-3/pull/57
+
+
 loopdev-3 0.5.2
 ===============
 Recommended Rust toolchain version: 1.87.0

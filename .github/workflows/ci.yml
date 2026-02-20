@@ -21,7 +21,7 @@ jobs:
           - x86_64-unknown-linux-musl
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Install stable toolchain
@@ -32,7 +32,6 @@ jobs:
           target: ${{ matrix.target }}
           override: true
       - name: Cross
-        # yamllint disable rule:line-length
         run: cargo install --git https://github.com/cross-rs/cross.git --rev bb3df1b cross
 
       - name: Run cargo check
@@ -47,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Install stable toolchain
@@ -71,11 +70,11 @@ jobs:
   dependencies:
     runs-on: ubuntu-latest
     container:
-      image: fedora:41  # CURRENT DEVELOPMENT ENVIRONMENT
+      image: fedora:42  # CURRENT DEVELOPMENT ENVIRONMENT
     steps:
       - name: Install git for checkout action
         run: dnf install -y git
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: loopdev-3
           persist-credentials: false
@@ -90,28 +89,26 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           components: cargo
-          toolchain: 1.90.0  # CURRENT DEVELOPMENT RUST TOOLCHAIN
+          toolchain: 1.93.0  # CURRENT DEVELOPMENT RUST TOOLCHAIN
       - name: Check out ci repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: ci
           repository: stratis-storage/ci
           persist-credentials: false
       - name: Run comparisons of version specs with Fedora packages
-        # yamllint disable rule:line-length
         run: |
           COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=rawhide IGNORE_ARGS="--ignore-category low" make -f Makefile check-fedora-versions
           COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=f43 IGNORE_ARGS="--ignore-category low" make -f Makefile check-fedora-versions
           COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=f42 IGNORE_ARGS="--ignore-category low" make -f Makefile check-fedora-versions
-          COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=f41 IGNORE_ARGS="--ignore-category low" make -f Makefile check-fedora-versions
         working-directory: loopdev-3
 
   yamllint:
     runs-on: ubuntu-22.04
     container:
-      image: fedora:41  # CURRENT DEVELOPMENT ENVIRONMENT
+      image: fedora:42  # CURRENT DEVELOPMENT ENVIRONMENT
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Install dependencies for Fedora
