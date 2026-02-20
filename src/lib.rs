@@ -324,20 +324,16 @@ impl LoopDevice {
     }
 
     /// Try to obtain the original file path used on mapping
-    /// The method ignores ioctl errors
+    /// The path is expected to be stored in the loop_info64.
+    /// The method ignores ioctl errors on requesting info.
     ///
     /// # Return
-    /// The path expected to be stored in the loop_info64.
-    /// If it's not there, method returns None, otherwise - the string stored
+    /// None - path field is empty, not a valid path or ioctl error was encountered
+    /// Some(PathBuf) - otherwise
     pub fn original_path(&self) -> Option<PathBuf> {
-        self.info().ok().and_then(|info| {
-            let name = Name(info.lo_file_name).to_string();
-            if name.is_empty() {
-                None
-            } else {
-                Some(PathBuf::from(name))
-            }
-        })
+        self.info()
+            .ok()
+            .and_then(|info| Name(info.lo_file_name).try_into().ok())
     }
 
     /// Get the device major number
