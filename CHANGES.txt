@@ -1,3 +1,45 @@
+loopdev-3 0.5.4
+===============
+Recommended Rust toolchain version: 1.99.1
+
+- Use std::sync::LazyLock instead of once_cell::Lazy:
+  https://github.com/stratis-storage/loopdev-3/pull/75
+
+- Increase Rust edition to 2024:
+  https://github.com/stratis-storage/loopdev-3/pull/92
+  https://github.com/stratis-storage/loopdev-3/pull/91
+
+- Increase lowest supported version of Rust to 1.89:
+  https://github.com/stratis-storage/loopdev-3/pull/105
+  https://github.com/stratis-storage/loopdev-3/pull/88
+  https://github.com/stratis-storage/loopdev-3/pull/78
+  https://github.com/stratis-storage/loopdev-3/pull/74
+
+- Tidies and Maintenance:
+  https://github.com/stratis-storage/loopdev-3/pull/104
+  https://github.com/stratis-storage/loopdev-3/pull/103
+  https://github.com/stratis-storage/loopdev-3/pull/102
+  https://github.com/stratis-storage/loopdev-3/pull/101
+  https://github.com/stratis-storage/loopdev-3/pull/100
+  https://github.com/stratis-storage/loopdev-3/pull/99
+  https://github.com/stratis-storage/loopdev-3/pull/98
+  https://github.com/stratis-storage/loopdev-3/pull/96
+  https://github.com/stratis-storage/loopdev-3/pull/95
+  https://github.com/stratis-storage/loopdev-3/pull/94
+  https://github.com/stratis-storage/loopdev-3/pull/93
+  https://github.com/stratis-storage/loopdev-3/pull/87
+  https://github.com/stratis-storage/loopdev-3/pull/85
+  https://github.com/stratis-storage/loopdev-3/pull/84
+  https://github.com/stratis-storage/loopdev-3/pull/83
+  https://github.com/stratis-storage/loopdev-3/pull/82
+  https://github.com/stratis-storage/loopdev-3/pull/81
+  https://github.com/stratis-storage/loopdev-3/pull/80
+  https://github.com/stratis-storage/loopdev-3/pull/79
+  https://github.com/stratis-storage/loopdev-3/pull/77
+  https://github.com/stratis-storage/loopdev-3/pull/76
+  https://github.com/stratis-storage/loopdev-3/pull/73
+
+
 loopdev-3 0.5.3
 ===============
 Recommended Rust toolchain version: 1.90.0
