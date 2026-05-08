@@ -1,7 +1,6 @@
 ---
 name: loopdev-3 dummy CI
 
-# yamllint disable-line rule:truthy
 on:
   push:
     branches:
