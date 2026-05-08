@@ -1,7 +1,6 @@
 ---
 name: loopdev-3 ci
 
-# yamllint disable-line rule:truthy
 on:
   push:
   pull_request:

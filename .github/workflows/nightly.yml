@@ -1,7 +1,6 @@
 ---
 name: loopdev-3 nightly
 
-# yamllint disable-line rule:truthy
 on:
   schedule:
     - cron: 5 3 * * *
