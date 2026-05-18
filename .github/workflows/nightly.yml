@@ -19,6 +19,10 @@ jobs:
         with:
           path: loopdev-3
           persist-credentials: false
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: cargo
+          rust-src-dir: loopdev-3
       - name: Install dependencies for Fedora
         run: >
           dnf install -y
@@ -27,10 +31,6 @@ jobs:
           openssl-devel
           python-requests
           python-semantic_version
-      - uses: dtolnay/rust-toolchain@master
-        with:
-          components: cargo
-          toolchain: 1.95.0  # CURRENT DEVELOPMENT RUST TOOLCHAIN
       - name: Check out ci repo
         uses: actions/checkout@v6
         with:
@@ -54,4 +54,3 @@ jobs:
         uses: obi1kenobi/cargo-semver-checks-action@v2
         with:
           verbose: true
-          rust-toolchain: 1.95.0  # CURRENT DEVELOPMENT RUST TOOLCHAIN
