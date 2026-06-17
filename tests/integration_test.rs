@@ -1,5 +1,5 @@
 use loopdev::{LoopControl, LoopDevice};
-use std::path::PathBuf;
+use std::{fs::File, os::fd::AsFd, path::PathBuf};
 
 mod util;
 use crate::util::{
@@ -219,4 +219,53 @@ fn add_a_loop_device() {
     let lc = LoopControl::open().expect("should be able to open the LoopControl device");
     assert!(lc.add(1).is_ok());
     assert!(lc.add(1).is_err());
+}
+
+#[test]
+fn test_device_name() {
+    let _lock = setup();
+
+    let lc = LoopControl::open().expect("should be able to open the LoopControl device");
+
+    let file = create_backing_file(128 * 1024 * 1024);
+    let file_path = file.to_path_buf();
+    let ld0 = lc
+        .next_free()
+        .expect("should not error finding the next free loopback device");
+
+    ld0.with()
+        .attach(&file)
+        .expect("should not error attaching the backing file to the loopdev");
+
+    file.close().expect("should delete the temp backing file");
+
+    assert_eq!(
+        file_path,
+        ld0.original_path()
+            .expect("expected a correct loop device name")
+    );
+
+    assert!(ld0.info().is_ok());
+}
+
+#[test]
+fn test_device_name_absent() {
+    let _lock = setup();
+    let file_size = 128 * 1024 * 1024;
+
+    let lc = LoopControl::open().expect("should be able to open the LoopControl device");
+
+    let file =
+        File::open(create_backing_file(file_size)).expect("should be able to open our temp file");
+    let ld0 = lc
+        .next_free()
+        .expect("should not error finding the next free loopback device");
+
+    ld0.with()
+        .attach_fd(file.as_fd())
+        .expect("should not error attaching the backing file to the loopdev");
+
+    assert!(ld0.info().is_ok());
+
+    assert!(ld0.original_path().is_none());
 }
