@@ -10,7 +10,7 @@ repository = "https://github.com/stratis-storage/loopdev-3"
 readme = "README.md"
 categories = ["os::linux-apis", "api-bindings"]
 keywords = ["loop"]
-edition = "2021"
+edition = "2024"
 exclude = ["/.github", ".gitignore", "Makefile"]
 
 [lib]
