@@ -1,3 +1,23 @@
+loopdev-3 0.5.4
+===============
+Recommended Rust toolchain version: 1.94.0
+Recommended development platform for Python development: Fedora 42
+
+- Use std::sync::LazyLock instead of once_cell::Lazy:
+  https://github.com/stratis-storage/loopdev-3/pull/75
+
+- Increase lowest supported version of Rust to 1.85:
+  https://github.com/stratis-storage/loopdev-3/pull/78
+  https://github.com/stratis-storage/loopdev-3/pull/74
+
+- Tidies and Maintenance:
+  https://github.com/stratis-storage/loopdev-3/pull/81
+  https://github.com/stratis-storage/loopdev-3/pull/80
+  https://github.com/stratis-storage/loopdev-3/pull/79
+  https://github.com/stratis-storage/loopdev-3/pull/77
+  https://github.com/stratis-storage/loopdev-3/pull/76
+  https://github.com/stratis-storage/loopdev-3/pull/73
+
 loopdev-3 0.5.3
 ===============
 Recommended Rust toolchain version: 1.90.0
