@@ -27,7 +27,7 @@ check-fedora-versions: test-compare-fedora-versions
 	${COMPARE_FEDORA_VERSIONS} ${FEDORA_RELEASE_ARGS} ${IGNORE_ARGS}
 
 yamllint:
-	yamllint --strict .github/workflows/*.yml .yamllint.yaml
+	yamllint --strict .github/workflows/*.yml .packit.yaml .yamllint.yaml
 fmt:
 	cargo fmt
 
@@ -43,12 +43,20 @@ build:
 doc-test:
 	cargo test --doc
 
+check-typos:
+	typos
+
+fix-typos:
+	typos -w
+
 .PHONY:
 	audit
 	build
 	check-fedora-versions
+	check-typos
 	clippy
 	doc-test
+	fix-typos
 	fmt
 	fmt-ci
 	test-compare-fedora-versions

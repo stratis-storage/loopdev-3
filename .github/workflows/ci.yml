@@ -100,15 +100,7 @@ jobs:
           COMPARE_FEDORA_VERSIONS=$GITHUB_WORKSPACE/ci/dependency_management/compare_fedora_versions FEDORA_RELEASE=f43 IGNORE_ARGS="--ignore-category low" make -f Makefile check-fedora-versions
         working-directory: loopdev-3
 
-  yamllint:
-    runs-on: ubuntu-22.04
-    container:
-      image: fedora:43  # CURRENT DEVELOPMENT ENVIRONMENT
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-      - name: Install dependencies for Fedora
-        run: dnf install -y make yamllint
-      - name: Run yamllint
-        run: make -f Makefile yamllint
+  general_checks:
+    uses: stratis-storage/github-actions/.github/workflows/reusable_general.yml@master
+    with:
+      fedora-container-image-number: 43  # CURRENT DEVELOPMENT ENVIRONMENT
