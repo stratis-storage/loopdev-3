@@ -1,7 +1,7 @@
 [package]
 name = "loopdev-3"
 description = "Setup and control loop devices"
-version = "0.5.3"
+version = "0.5.4"
 authors = ["Stratis Developers <stratis-devel@lists.fedorahosted.org>", "Michael Daffin <michael@daffin.io>"]
 rust-version = "1.87.0"  # LOWEST SUPPORTED RUST TOOLCHAIN
 license = "MIT"
@@ -18,6 +18,7 @@ name = "loopdev"
 
 [features]
 direct_io = []
+block_size = []
 
 [dependencies]
 errno = "0.3.0"
