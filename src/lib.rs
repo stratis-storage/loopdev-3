@@ -6,6 +6,8 @@
 //!
 //! Provides rust interface with similar functionality to the Linux utility `losetup`.
 //!
+//! > ⚠️ **NOTICE:** this crate only supports Linux kernel version `4.14` or higher.
+//!
 //! # Examples
 //!
 //! Default options:
@@ -39,7 +41,7 @@
 //! ```
 use crate::bindings::{
     LO_FLAGS_AUTOCLEAR, LO_FLAGS_PARTSCAN, LO_FLAGS_READ_ONLY, LOOP_CLR_FD, LOOP_CTL_ADD,
-    LOOP_CTL_GET_FREE, LOOP_SET_CAPACITY, LOOP_SET_FD, LOOP_SET_STATUS64, loop_info64,
+    LOOP_CTL_GET_FREE, LOOP_SET_BLOCK_SIZE, LOOP_SET_CAPACITY, LOOP_SET_FD, LOOP_SET_STATUS64, loop_info64,
 };
 #[cfg(feature = "direct_io")]
 use bindings::LOOP_SET_DIRECT_IO;
@@ -210,6 +212,7 @@ impl LoopDevice {
         AttachOptions {
             device: self,
             info: bindings::loop_info64::default(),
+            block_size: None,
             #[cfg(feature = "direct_io")]
             direct_io: false,
         }
@@ -407,6 +410,25 @@ impl LoopDevice {
         })?;
         Ok(())
     }
+
+    /// Set the block size of the loop device.
+    ///
+    /// The block size must be a power of two in the range [512, page_size].
+    ///
+    /// # Errors
+    ///
+    /// This function will return an error for various reasons when calling the
+    /// ioctl to set the block size for the device.
+    pub fn set_block_size(&self, block_size: u32) -> io::Result<()> {
+        ioctl_to_error(unsafe {
+            ioctl(
+                self.device.as_raw_fd() as c_int,
+                LOOP_SET_BLOCK_SIZE as IoctlRequest,
+                libc::c_ulong::from(block_size),
+            )
+        })?;
+        Ok(())
+    }
 }
 
 /// Used to set options when attaching a device. Created with [`LoopDevice::with`()].
@@ -441,6 +463,7 @@ impl LoopDevice {
 pub struct AttachOptions<'d> {
     device: &'d LoopDevice,
     info: loop_info64,
+    block_size: Option<u32>,
     #[cfg(feature = "direct_io")]
     direct_io: bool,
 }
@@ -485,6 +508,14 @@ impl AttachOptions<'_> {
         self
     }
 
+    /// Set the block size of the loop device.
+    ///
+    /// The block size must be a power of two in the range [512, page_size].
+    pub fn block_size(mut self, block_size: u32) -> Self {
+        self.block_size = Some(block_size);
+        self
+    }
+
     /// Force the kernel to scan the partition table on a newly created loop device. Note that the
     /// partition table parsing depends on sector sizes. The default is sector size is 512 bytes
     pub fn part_scan(mut self, enable: bool) -> Self {
@@ -506,7 +537,12 @@ impl AttachOptions<'_> {
     /// for further details) or when calling the ioctl to attach the backing
     /// file to the device.
     pub fn attach(self, backing_file: impl AsRef<Path>) -> io::Result<()> {
+        if let Some(block_size) = self.block_size {
+            self.device.set_block_size(block_size)?;
+        }
+
         self.device.attach_with_loop_info(backing_file, self.info)?;
+
         #[cfg(feature = "direct_io")]
         if self.direct_io {
             self.device.set_direct_io(self.direct_io)?;
@@ -521,8 +557,13 @@ impl AttachOptions<'_> {
     /// This function will return an error for various reasons when calling the
     /// ioctl to attach the backing file to the device.
     pub fn attach_fd(self, backing_file_fd: impl AsRawFd) -> io::Result<()> {
+        if let Some(block_size) = self.block_size {
+            self.device.set_block_size(block_size)?;
+        }
+
         self.device
             .attach_fd_with_loop_info(backing_file_fd, self.info)?;
+
         #[cfg(feature = "direct_io")]
         if self.direct_io {
             self.device.set_direct_io(self.direct_io)?;
