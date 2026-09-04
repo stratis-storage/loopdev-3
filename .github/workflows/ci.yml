@@ -67,7 +67,7 @@ jobs:
   dependencies:
     runs-on: ubuntu-latest
     container:
-      image: fedora:43  # CURRENT DEVELOPMENT ENVIRONMENT
+      image: fedora:44  # CURRENT DEVELOPMENT ENVIRONMENT
     steps:
       - name: Install git for checkout action
         run: dnf install -y git
@@ -103,4 +103,4 @@ jobs:
   general_checks:
     uses: stratis-storage/github-actions/.github/workflows/reusable_general.yml@master
     with:
-      fedora-container-image-number: 43  # CURRENT DEVELOPMENT ENVIRONMENT
+      fedora-container-image-number: 44  # CURRENT DEVELOPMENT ENVIRONMENT
