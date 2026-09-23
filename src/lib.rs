@@ -41,6 +41,8 @@ use crate::bindings::{
     LO_FLAGS_AUTOCLEAR, LO_FLAGS_PARTSCAN, LO_FLAGS_READ_ONLY, LOOP_CLR_FD, LOOP_CTL_ADD,
     LOOP_CTL_GET_FREE, LOOP_SET_CAPACITY, LOOP_SET_FD, LOOP_SET_STATUS64, loop_info64,
 };
+#[cfg(feature = "block_size")]
+use bindings::LOOP_SET_BLOCK_SIZE;
 #[cfg(feature = "direct_io")]
 use bindings::LOOP_SET_DIRECT_IO;
 use libc::{c_int, ioctl};
@@ -212,6 +214,8 @@ impl LoopDevice {
             info: bindings::loop_info64::default(),
             #[cfg(feature = "direct_io")]
             direct_io: false,
+            #[cfg(feature = "block_size")]
+            block_size: None,
         }
     }
 
@@ -407,6 +411,26 @@ impl LoopDevice {
         })?;
         Ok(())
     }
+
+    /// Set the block size of the loop device.
+    ///
+    /// The block size must be a power of two in the range [512, page_size].
+    ///
+    /// # Errors
+    ///
+    /// This function will return an error for various reasons when calling the
+    /// ioctl to set the block size for the device.
+    #[cfg(feature = "block_size")]
+    pub fn set_block_size(&self, block_size: u32) -> io::Result<()> {
+        ioctl_to_error(unsafe {
+            ioctl(
+                self.device.as_raw_fd() as c_int,
+                LOOP_SET_BLOCK_SIZE as IoctlRequest,
+                libc::c_ulong::from(block_size),
+            )
+        })?;
+        Ok(())
+    }
 }
 
 /// Used to set options when attaching a device. Created with [`LoopDevice::with`()].
@@ -443,6 +467,8 @@ pub struct AttachOptions<'d> {
     info: loop_info64,
     #[cfg(feature = "direct_io")]
     direct_io: bool,
+    #[cfg(feature = "block_size")]
+    block_size: Option<u32>,
 }
 
 impl AttachOptions<'_> {
@@ -485,6 +511,15 @@ impl AttachOptions<'_> {
         self
     }
 
+    /// Set the block size of the loop device.
+    ///
+    /// The block size must be a power of two in the range [512, page_size].
+    #[cfg(feature = "block_size")]
+    pub fn block_size(mut self, block_size: u32) -> Self {
+        self.block_size = Some(block_size);
+        self
+    }
+
     /// Force the kernel to scan the partition table on a newly created loop device. Note that the
     /// partition table parsing depends on sector sizes. The default is sector size is 512 bytes
     pub fn part_scan(mut self, enable: bool) -> Self {
@@ -511,6 +546,10 @@ impl AttachOptions<'_> {
         if self.direct_io {
             self.device.set_direct_io(self.direct_io)?;
         }
+        #[cfg(feature = "block_size")]
+        if let Some(block_size) = self.block_size {
+            self.device.set_block_size(block_size)?;
+        }
         Ok(())
     }
 
@@ -526,6 +565,10 @@ impl AttachOptions<'_> {
         #[cfg(feature = "direct_io")]
         if self.direct_io {
             self.device.set_direct_io(self.direct_io)?;
+        }
+        #[cfg(feature = "block_size")]
+        if let Some(block_size) = self.block_size {
+            self.device.set_block_size(block_size)?;
         }
         Ok(())
     }
