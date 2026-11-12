@@ -4,6 +4,8 @@ Setup and control loop devices.
 
 Provides rust interface with similar functionality to the Linux utility `losetup`.
 
+> ⚠️ **NOTICE:** this crate only supports Linux kernel version `4.14` or higher.
+
 ## [Documentation](https://docs.rs/loopdev)
 
 ## Examples
